@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load tailwind_filters %}
+
+{% block title %}Log In{% endblock %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+    {% load static %}
+    <script>
+        window.location.href = "{% url 'home' %}";
+    </script>
+{% endif %}
+
+<div class="bg-slate-100 p-7 max-w-xl mx-auto rounded-xl">
+    <div class="max-w-lg p-8 mx-auto bg-white rounded-lg shadow-md">
+        <div class="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-indigo-500 text-white text-2xl font-semibold shadow-lg">🔒</div>
+        
+        <form method="post" class="flex flex-col gap-4">
+            {% csrf_token %}
+            <div class="mb-4">
+                {{ form|crispy }}
+            </div>
+            <button class="w-full py-3 text-white bg-indigo-500 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring focus:border-indigo-700 transition duration-300">Log in</button>
+        </form>
+
+        <div class="flex flex-col mt-5 py-5 border-t">
+            <p class="text-center text-sm text-gray-500">
+                <a href="{% url 'password_reset' %}" class="text-indigo-500 hover:text-indigo-600 active:text-indigo-700">Reset password?</a>
+            </p>
+            <p class="text-center mt-3 text-sm text-gray-500">
+                Don't have an account? 
+                <a href="{% url 'signup' %}" class="text-indigo-500 hover:text-indigo-600 active:text-indigo-700">Register here</a>
+            </p>
+        </div>
+        
+    </div>
+</div>
+
+
+
+
+{% endblock content %}
