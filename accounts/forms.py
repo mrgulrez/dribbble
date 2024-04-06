@@ -12,3 +12,8 @@ class SignupForm(forms.ModelForm):
         }
 
 
+class GetStartedForm(forms.ModelForm):
+    class Meta:
+        model = UserRegistration
+        fields = ['location', 'profile_picture']
+

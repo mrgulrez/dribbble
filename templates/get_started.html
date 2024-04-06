@@ -1,0 +1,213 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <title> {% block title %} Gulrez Alam {% endblock  %} </title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="shortcut icon" type="image/png" href="{% static 'images/favicon.png' %}" style="border-radius: 50%;">
+
+
+</head>
+
+<body>
+        <section class="text-gray-600 body-font relative">
+            <span class="absolute top-10 left-10 p-8 ">{% include "logo.html" %}</span>
+
+            <div class="container px-5 py-24 mx-auto">                
+                <div class="lg:w-1/2 md:w-2/3 mx-auto">
+                    <div class="flex flex-wrap -m-2">
+                        <div class="p-2 w-full   {% block form_class %}  {% endblock %}">
+                            
+                            
+
+
+                            <form method="post" enctype="multipart/form-data" id="multistep-form">
+                                {% csrf_token %}
+                                {{ form.non_field_errors }}
+                                <!-- Step 1 -->
+                                <div id="step1" class="step">
+                                    <div class="flex flex-col text-center w-full mb-20">
+                                        <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900 my-10"> {% block heading %} Welcome! Let’s create your profile{% endblock %} </h1>
+                                        <p class="lg:w-2/3 mx-auto leading-relaxed text-base "> {% block subheading %} Let others get to know you better! {% endblock %} </p>
+                                    </div>
+                                    <div class="flex flex-col lg:flex-row mb-4">
+                                        <div class="lg:w-1/2 lg:pr-2 mb-4 lg:mb-0">
+                                            <div id="imagePreview" class="relative w-40 h-40 rounded-full overflow-hidden bg-gray-200">
+                                                <!-- Display uploaded image here -->
+                                                {% if user_registration.profile_picture %}
+                                                    <img src="{{ user_registration.profile_picture.url }}" class="object-cover w-full h-full" alt="Profile picture">
+                                                {% else %}
+                                                    {% if form.profile_picture.value %}
+                                                        <img id="previewImage" src="{{ form.profile_picture.value.url }}" class="object-cover w-full h-full" alt="Upload the profile image">
+                                                    {% else %}
+                                                        <img id="previewImage" src="{% static 'images/default.png' %}" class="object-cover w-full h-full" alt="Default pic">
+                                                    {% endif %}
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="lg:w-1/2 lg:pl-2">
+                                            <label for="id_profile_picture" class="cursor-pointer">
+                                                <span class="border border-blue-950 rounded-full p-3 hover:border-rose-700 shadow-lg">Choose Image</span>
+                                            </label>
+                                            <input id="id_profile_picture" name="profile_picture" type="file" class="hidden">
+                                            <div class="text-sm text-gray-500 my-4">JPG, JPEG, PNG, GIF</div>
+                                            {% if form.profile_picture.errors %}
+                                            <ul class="text-red-500">
+                                                {% for error in form.profile_picture.errors %}
+                                                <li>{{ error }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                            {% endif %}
+    
+                                            <div class="text-md text-gray-500 my-8">> Or chose one of our default</div>
+    
+                                        </div>
+                                        
+                                    </div>
+                                
+                                    <div class="mb-4">
+                                        <label for="id_location" class="text-2xl font-bold">Add your location</label>
+                                        <textarea id="id_location" name="location" class=" w-full px-3 py-2 rounded-md focus:outline-none shadow-xs text-gray-700" placeholder="Enter a location"></textarea>
+                                        {% if form.location.errors %}
+                                        <ul class="text-red-500">
+                                            {% for error in form.location.errors %}
+                                            <li>{{ error }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                        {% endif %}
+                                    </div>
+                                    
+                                
+                                    <div class="mb-4">
+                                        <hr class="h-px bg-gray-200 border-0 dark:bg-gray-300">
+                                    </div>
+                                    <div class="mb-4 ">
+                                        <button id="next1" type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold px-10 py-3 rounded-full">Next</button>
+                                    </div>
+                                </div>
+
+
+
+
+                                <!-- Step 2 -->
+                                <div id="step2" class="hidden step">
+                                    <div class="flex flex-col text-center w-full mb-20">
+                                        <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900 my-10"> What brings you to Dribbble</h1>
+                                        <p class="lg:w-2/3 mx-auto leading-relaxed text-base "> Select the option that best describe you. Don't worry you can explore other option later. </p>
+                                    </div>
+
+                                    <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                                        <label class="flex flex-col items-center p-4 bg-white border border-gray-200  shadow-md">
+                                            <img src="{% static 'images/first.png' %}" class=" object-cover rounded-full" alt="Image">
+                                            <span class="mt-2 font-bold">I am a designer looking for work</span>
+                                            <input type="checkbox" name="tiles" value="first" class="form-checkbox">
+                                        </label>
+                                        <label class="flex flex-col items-center p-4 bg-white border border-gray-200  shadow-md">
+                                            <img src="{% static 'images/second.png' %}" class="object-cover rounded-full " alt="Image">
+                                            <span class="mt-2 font-bold">I am looking to hire a designer</span>
+                                            <input type="checkbox" name="tiles" value="second" class="form-checkbox">
+                                        </label>
+                                        <label class="flex flex-col items-center p-4 bg-white border border-gray-200  shadow-md">
+                                            <img src="{% static 'images/third.png' %}" class="object-cover rounded-full" alt="Image">
+                                            <span class="mt-2 font-bold">I am looking for design inspiration</span>
+                                            <input type="checkbox" name="tiles" value="third" class="form-checkbox">
+                                        </label>
+
+                                        {% if form.tiles.errors %}
+                                        <ul class="text-red-500">
+                                            {% for error in form.tiles.errors %}
+                                            <li>{{ error }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                        {% endif %}
+                                    </div>
+                                    
+                                    
+
+                                    <div class="mb-4 flex justify-between my-10">
+                                        <button id="back1" type="button" class="bg-gray-500 hover:bg-gray-700 text-white font-bold px-10 py-3 rounded-full">Back</button>
+                                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold px-10 py-3 rounded-full">Submit</button>
+
+                                    </div>
+
+                                </div>
+                                
+                            </form>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+</body>
+
+
+
+
+
+
+
+<script>
+    // Function to preview image before uploading
+    function previewImage(event) {
+        var reader = new FileReader();
+        reader.onload = function() {
+            var output = document.getElementById('previewImage');
+            output.src = reader.result;
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    }
+
+    // Add event listener to file input
+    document.getElementById('id_profile_picture').addEventListener('change', previewImage);
+
+/// multistep_form.js
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('multistep-form');
+    const steps = Array.from(form.getElementsByClassName('step'));
+    let currentStep = 0;
+
+    function showStep(stepIndex) {
+        steps.forEach((step, index) => {
+            if (index === stepIndex) {
+                step.classList.remove('hidden');
+            } else {
+                step.classList.add('hidden');
+            }
+        });
+    }
+
+    function validateStep(stepIndex) {
+        // Add your validation logic here
+        return true;
+    }
+
+    function goToStep(stepIndex) {
+        if (validateStep(stepIndex)) {
+            currentStep = stepIndex;
+            showStep(currentStep);
+        }
+    }
+
+    document.getElementById('next1').addEventListener('click', function () {
+        goToStep(1);
+    });
+
+    document.getElementById('back1').addEventListener('click', function () {
+        goToStep(0);
+    });
+
+    document.getElementById('submit').addEventListener('click', function () {
+       
+        form.submit();
+    });
+
+});
+
+
+
+</script>
+</html>

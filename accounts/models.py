@@ -9,6 +9,9 @@ class UserRegistration(models.Model):
     email = models.EmailField(max_length=255, unique=True, error_messages={'unique': 'This email is already taken.'}, default='')
     password = models.CharField(max_length=255, validators=[MinLengthValidator(7)], default='')
     agree_to_terms = models.BooleanField(default=False, error_messages={'required': 'You must agree to the terms.'})
+    profile_picture = models.ImageField(upload_to='profile_pictures/')
+    location = models.CharField(max_length=255, default='')
+    
 
     def __str__(self):
         return self.username

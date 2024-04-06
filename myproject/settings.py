@@ -143,12 +143,16 @@ LOGOUT_REDIRECT_URL = "home"
 
 # Email Backend
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.hostinger.com' 
+EMAIL_USE_TLS = True 
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'gulrez@gulrez.com'  
+EMAIL_HOST_PASSWORD = 'GulrezGGmai123@'  
 
-# SMTP Configuration for Hostinger's email server
-EMAIL_HOST = 'smtp.hostinger.com'  # Hostinger's SMTP server address
-EMAIL_PORT = 587  # SMTP server port (587 is commonly used for TLS/STARTTLS)
-EMAIL_USE_TLS = True  # Use TLS/STARTTLS for secure communication with SMTP server
 
-# Your email credentials (replace with your actual email credentials)
-EMAIL_HOST_USER = 'gulrez@gulrez.com'  # Your email address
-EMAIL_HOST_PASSWORD = 'GulrezGGmai123@'  # Your email password or app-specific password
+
+
+# Base url to serve media files
+MEDIA_URL = '/media/'
+# Path where media is stored
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')

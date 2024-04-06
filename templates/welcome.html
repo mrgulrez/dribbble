@@ -1,0 +1,107 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <title> {% block title %} Gulrez Alam {% endblock  %} </title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="shortcut icon" type="image/png" href="{% static 'images/favicon.png' %}" style="border-radius: 50%;">
+</head>
+        
+<body>
+    <!-- multistep_form.html -->
+<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8">
+        <div>
+            <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+                Multi-Step Form
+            </h2>
+        </div>
+        <form id="multistep-form" class="mt-8 space-y-6">
+            <!-- Step 1 -->
+            <div id="step1" class="step">
+                <div class="rounded-md shadow-sm -space-y-px">
+                    <div>
+                        <label for="step1-field1" class="sr-only">Field 1</label>
+                        <input id="step1-field1" name="step1-field1" type="text" required
+                               class="appearance-none rounded-none relative block w-full px-3 py-2 border
+                               border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none
+                               focus:ring-rose-500 focus:border-rose-500 focus:z-10 sm:text-sm"
+                               placeholder="Field 1">
+                    </div>
+                </div>
+                <div class="flex justify-between">
+                    <button type="button" class="disabled:opacity-50 bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                            disabled>Back</button>
+                    <button type="button" id="next1"
+                            class="bg-rose-500 hover:bg-rose-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Next</button>
+                </div>
+            </div>
+
+
+            
+            <!-- Step 2 -->
+            <div id="step2" class="hidden step">
+                <div class="rounded-md shadow-sm -space-y-px">
+                    <div>
+                        <label for="step2-field2" class="sr-only">Field 2</label>
+                        <input id="step2-field2" name="step2-field2" type="text" required
+                               class="appearance-none rounded-none relative block w-full px-3 py-2 border
+                               border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none
+                               focus:ring-rose-500 focus:border-rose-500 focus:z-10 sm:text-sm"
+                               placeholder="Field 2">
+                    </div>
+                </div>
+                <div class="flex justify-between">
+                    <button type="button" id="back2"
+                            class="bg-rose-500 hover:bg-rose-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Back</button>
+                    <button type="submit"
+                            class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+
+<script>
+    // multistep_form.js
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('multistep-form');
+    const steps = Array.from(form.getElementsByClassName('step'));
+    let currentStep = 0;
+
+    function showStep(stepIndex) {
+        steps.forEach((step, index) => {
+            if (index === stepIndex) {
+                step.classList.remove('hidden');
+            } else {
+                step.classList.add('hidden');
+            }
+        });
+    }
+
+    function validateStep(stepIndex) {
+        // Add your validation logic here
+        return true;
+    }
+
+    function goToStep(stepIndex) {
+        if (validateStep(stepIndex)) {
+            currentStep = stepIndex;
+            showStep(currentStep);
+        }
+    }
+
+    document.getElementById('next1').addEventListener('click', function () {
+        goToStep(1);
+    });
+
+    document.getElementById('back2').addEventListener('click', function () {
+        goToStep(0);
+    });
+});
+</script>
+</html>
