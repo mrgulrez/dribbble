@@ -1,20 +1,27 @@
-from django.shortcuts import render,  redirect
-from django.contrib.auth.forms import UserCreationForm
-from django.urls import reverse_lazy
-from django.views import generic
-from django.views import View
-from .forms import RegisterForm
+from django.contrib.auth.models import User
+from django.shortcuts import render, redirect
+from .forms import SignupForm
+from .models import UserRegistration
 
-# Create your views here.
-
-class UserSignUpView(View):
-    def get(self, request):
-        form = RegisterForm()
-        return render(request, 'registration/signup.html', {'form': form})
-    
-    def post(self, request):
-        form = RegisterForm(request.POST)
+def signup(request):
+    if request.method == 'POST':
+        form = SignupForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('home')
-        return render(request, 'registration/signup.html', {'form': form})
+            # Check if email or username already exists
+            if UserRegistration.objects.filter(email=form.cleaned_data['email']).exists():
+                form.add_error('email', 'Email already exists.')
+            if UserRegistration.objects.filter(username=form.cleaned_data['username']).exists():
+                form.add_error('username', 'Username already exists.')
+
+            if not form.errors:
+                # Associate the UserRegistration instance with the current user
+                user = User.objects.create_user(username=form.cleaned_data['username'],
+                                                email=form.cleaned_data['email'],
+                                                password=form.cleaned_data['password'])
+                user_registration = form.save(commit=False)
+                user_registration.user = user
+                user_registration.save()
+                return redirect('home')
+    else:
+        form = SignupForm()
+    return render(request, 'registration/signup.html', {'form': form})
